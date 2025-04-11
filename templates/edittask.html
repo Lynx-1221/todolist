@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EditTask</title>
+</head>
+<body>
+    <form action="{{  url_for('index')  }}" method="POST">
+        <label>Add a task: </label> <br>
+        <input type="text" placeholder="Task Name" name="tasknameedited" value="{{taskname}}"> <br>
+        <input type="text" placeholder="Task Type" name="tasktype" value="{{tasktype}}"> <br>
+        <input type="submit" name="{{id}}" value="Edit Task"> <br>
+    </form>
+</body>
+</html>

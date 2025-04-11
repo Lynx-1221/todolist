@@ -44,7 +44,6 @@ def index():
                 lines[num] = lines[num][:-2]+"1\n"
             else:
                 lines[num] = lines[num][:-2]+"0\n"
-            print(list(request.form.keys()))
             file = "".join(lines)
             edit(file)
         elif "delete" in request.form.keys():
@@ -52,6 +51,16 @@ def index():
             lines = search()
             lines.remove(lines[int(id)])
             result = ""
+            for i in lines:
+                result += i
+            edit(result)
+        elif "tasknameedited" in request.form.keys():
+            taskname = request.form["tasknameedited"]
+            tasktype = request.form['tasktype']
+            id = list(request.form.keys())[2]
+            result = ''
+            lines = search()
+            lines[int(id)] = taskname+","+tasktype+","+lines[int(id)][-2:]
             for i in lines:
                 result += i
             edit(result)
@@ -63,6 +72,15 @@ def index():
 def addtask():
     if request.method == "POST":
         return render_template("addtask.html")
+
+@app.route('/edittask/', methods=["GET", "POST"])
+def edittask():
+    if request.method == "POST":
+        id = list(request.form.keys())[1]
+        tasks = get_tasks()
+        taskname = list(tasks.keys())[int(id)]
+        tasktype = tasks[taskname][0]
+        return render_template("edittask.html", taskname=taskname, tasktype=tasktype, id = id)
 
 
 if __name__ == "__main__":
