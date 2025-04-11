@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+
+    <h1>Tasks</h1>
+    <table >
+        <th>Task</th>
+        <th>Type</th>
+        <th>Done?</th>
+        <th>Remove</th>
+        {% if length != 0 %}
+            {% for i in range(length) %}
+            {% set count = i %}
+            <tr>
+                <td>{{tasknames[i]}}</td>
+                <td>{{tasks[tasknames[i]][0]}}</td>
+                <td>
+                    <form id="taskform_{{tasknames[i]}}" method="POST">
+                        <input type="hidden" name="taskform">
+                        <input type="hidden" name="{{count}}">
+                        {% if tasks[tasknames[i]][1] == '0' %}
+                            <input type="checkbox" id="{{tasknames[i]}}" onclick="submitForm('taskform_{{tasknames[i]}}')">
+                        {% elif tasks[tasknames[i]][1] == '1' %}
+                            <input type="checkbox" id="{{tasknames[i]}}" onclick="submitForm('taskform_{{tasknames[i]}}')" checked>
+                        {% endif %}
+                        <br>
+                    </form>
+                </td>
+                <td>
+                    <form method="POST">
+                        <input type="hidden" name="delete">
+                        <input type="hidden" name="{{count}}">
+                        <input name="deletebutton" type="image" 
+                        src="{{ url_for('static', filename='/img/deletelogo.png') }}" 
+                        onclick="submitForm();"
+                        tabindex="8" width="80" height="60"/>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        {% endif %}
+    </table>
+
+    
+    <form action="{{  url_for('addtask')  }}" method="POST" id="form">
+        <input type="submit" value="Add Task">
+    </form>
+
+    <script>
+        function submitForm(taskname){
+            const form = document.getElementById(taskname);
+            form.submit();
+        }
+    </script>
+</body>
+</html>
